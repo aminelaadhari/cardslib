@@ -18,9 +18,13 @@
 
 package it.gmariotti.cardslib.library.view;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.util.Property;
+import com.nineoldandroids.util.FloatProperty;
+import com.nineoldandroids.view.ViewHelper;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -63,6 +67,18 @@ import it.gmariotti.cardslib.library.view.listener.SwipeOnScrollListener;
  * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
  */
 public class CardListView extends ListView implements CardView.OnExpandListAnimatorListener {
+
+    public static final Property<View, Float> ALPHA = new FloatProperty<View>("alpha") {
+        @Override
+        public void setValue(View object, float value) {
+            ViewHelper.setAlpha(object, value);
+        }
+
+        @Override
+        public Float get(View object) {
+            return ViewHelper.getAlpha(object);
+        }
+    };
 
     protected static String TAG = "CardListView";
 

@@ -18,14 +18,16 @@
 
 package it.gmariotti.cardslib.library.view.listener;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
 import it.gmariotti.cardslib.library.R;
@@ -68,7 +70,7 @@ public class UndoBarController {
 
     public UndoBarController(View undoBarView, UndoListener undoListener,UndoBarUIElements undoBarUIElements) {
         mBarView = undoBarView;
-        mBarAnimator = mBarView.animate();
+        mBarAnimator = animate(mBarView);
         mUndoListener = undoListener;
 
         if (undoBarUIElements==null)
@@ -100,7 +102,7 @@ public class UndoBarController {
 
         mBarView.setVisibility(View.VISIBLE);
         if (immediate) {
-            mBarView.setAlpha(1);
+            ViewHelper.setAlpha(mBarView, 1);
         } else {
             mBarAnimator.cancel();
             mBarAnimator
@@ -116,7 +118,7 @@ public class UndoBarController {
         mHideHandler.removeCallbacks(mHideRunnable);
         if (immediate) {
             mBarView.setVisibility(View.GONE);
-            mBarView.setAlpha(0);
+            ViewHelper.setAlpha(mBarView, 0);
             mUndoMessage = null;
             mUndoToken = null;
 

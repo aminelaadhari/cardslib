@@ -73,7 +73,7 @@ public class GoogleNowStockCard extends Card {
         //Add swipe Listener
         setOnSwipeListener(new OnSwipeListener() {
             @Override
-            public void onSwipe(Card card) {
+            public void onSwipe(Card card, boolean dismissRight) {
                 Toast.makeText(getContext(), "Card removed", Toast.LENGTH_LONG).show();
             }
         });

@@ -49,15 +49,10 @@ public class ForegroundLinearLayout extends LinearLayout {
     }
 
     public ForegroundLinearLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public ForegroundLinearLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        super(context, attrs);
 
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ForegroundLinearLayout,
-                defStyle, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ForegroundLinearLayout);
 
         mForegroundGravity = a.getInt(
                 R.styleable.ForegroundLinearLayout_android_foregroundGravity, mForegroundGravity);

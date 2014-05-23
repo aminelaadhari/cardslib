@@ -22,11 +22,17 @@ package it.gmariotti.cardslib.library.internal.multichoice;
  * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
  */
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.view.ActionModeWrapper;
+import android.support.v7.view.ActionMode;
 import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -39,13 +45,14 @@ import it.gmariotti.cardslib.library.R;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
 
-public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClickListener,AdapterView.OnItemClickListener {
+public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
     protected static final String TAG = MultiChoiceAdapterHelperBase.class.getSimpleName();
 
     protected AbsListView mAdapterView;
+    private Context context;
     protected BaseAdapter owner;
-    protected AbsListView.MultiChoiceModeListener mMultiChoiceModeListener;
+    protected MultiChoiceModeListener mMultiChoiceModeListener;
 
     /**
      * ActionMode
@@ -58,7 +65,8 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
     // Constructors
     // -------------------------------------------------------------
 
-    public MultiChoiceAdapterHelperBase(BaseAdapter owner) {
+    public MultiChoiceAdapterHelperBase(Context context, BaseAdapter owner) {
+        this.context = context;
         this.owner = owner;
     }
 
@@ -68,12 +76,14 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
 
     /**
      * Sets the adapter and
+     *
      * @param adapterView
      */
     public void setAdapterView(AbsListView adapterView) {
-        mAdapterView=adapterView;
+        mAdapterView = adapterView;
         //mAdapterView.setOnItemLongClickListener(this);
-        mAdapterView.setMultiChoiceModeListener(mMultiChoiceModeListener);
+        if (Build.VERSION.SDK_INT >= 11)
+            mAdapterView.setMultiChoiceModeListener(new InternalV11Listener());
     }
 
     /**
@@ -103,17 +113,18 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
             //mCardView.setLongClickable(true);
 
             mCardView.setOnClickListener(advanceClickListener);
-        }else{
-            if (mCard.getOnClickListener()!=null){
+        } else {
+            if (mCard.getOnClickListener() != null) {
                 mCardView.setOnClickListener(advanceClickListener);
             }
         }
     }
+
     /**
      * Checks and unchecks the items
      *
-     * @param handle    position
-     * @param checked   true if item is checked, false otherwise
+     * @param handle  position
+     * @param checked true if item is checked, false otherwise
      */
     protected void setItemChecked(long handle, boolean checked) {
         if (checked) {
@@ -128,8 +139,9 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
      *
      * @param handle
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void checkItem(long handle) {
-        mAdapterView.setItemChecked((int)handle,true);
+        mAdapterView.setItemChecked((int) handle, true);
     }
 
     /**
@@ -137,14 +149,16 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
      *
      * @param handle
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void uncheckItem(long handle) {
-        mAdapterView.setItemChecked((int)handle,false);
+        mAdapterView.setItemChecked((int) handle, false);
     }
 
     // -------------------------------------------------------------
     // OnItemLongClickListener implementation
     // -------------------------------------------------------------
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
 
@@ -157,13 +171,13 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
         //Check the item
         int correctedPosition = correctPositionAccountingForHeader(adapterView, position);
         long handle = positionToSelectionHandle(correctedPosition);
-        boolean wasChecked =  mAdapterView.isItemChecked((int)handle);
+        boolean wasChecked = mAdapterView.isItemChecked((int) handle);
 
         // invoke the contextual action mode by setting the respective list item to the checked
         setItemChecked(handle, !wasChecked);
         view.setActivated(!wasChecked);
 
-        if (actionMode!=null){
+        if (actionMode != null) {
             //You need it to enable the CAB
             //((CardView)view).setLongClickable(false);
         }
@@ -207,15 +221,15 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MultiChoiceAdapter adapter = (MultiChoiceAdapter) owner;
-        if (adapter.getOptionMultiChoice().isSelectItemClickInActionMode()){
-            if (adapter.isActionModeStarted()){
+        if (adapter.getOptionMultiChoice().isSelectItemClickInActionMode()) {
+            if (adapter.isActionModeStarted()) {
                 onItemLongClick(parent, view, position, id);
                 return;
-            }else{
+            } else {
                 //Default card onItemClick
                 internal_onItemClick(parent, view, position, id);
             }
-        }else{
+        } else {
             //Default card onItemClick
             internal_onItemClick(parent, view, position, id);
         }
@@ -233,10 +247,10 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
     // ActionMode
     // -------------------------------------------------------------
 
-    public boolean startActionMode(Activity activity) {
-        if (activity!=null){
+    public boolean startActionMode(ActionBarActivity activity) {
+        if (activity != null) {
             if (!isActionModeStarted())
-                activity.startActionMode(mMultiChoiceModeListener);
+                activity.startSupportActionMode(mMultiChoiceModeListener);
         }
         return false;
     }
@@ -248,7 +262,7 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
      * @param mode ActionMode being created
      * @param menu Menu used to populate action buttons
      * @return true if the action mode should be created, false if entering this
-     *              mode should be aborted.
+     * mode should be aborted.
      */
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         actionMode = mode;
@@ -271,11 +285,11 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
     /**
      * Called when an item is checked or unchecked during selection mode.
      *
-     * @param mode The {@link ActionMode} providing the selection mode
+     * @param mode     The {@link ActionMode} providing the selection mode
      * @param position Adapter position of the item that was checked or unchecked
-     * @param id Adapter ID of the item that was checked or unchecked
-     * @param checked <code>true</code> if the item is now checked, <code>false</code>
-     *                if the item is now unchecked.
+     * @param id       Adapter ID of the item that was checked or unchecked
+     * @param checked  <code>true</code> if the item is now checked, <code>false</code>
+     *                 if the item is now unchecked.
      */
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
         onItemSelectedStateChanged(mode);
@@ -289,6 +303,7 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
      *
      * @param mode
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onItemSelectedStateChanged(ActionMode mode) {
         int count = mAdapterView.getCheckedItemCount();
 
@@ -318,17 +333,19 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
 
     /**
      * Returns the selected cards
+     *
      * @return
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public ArrayList<Card> getSelectedCards() {
         SparseBooleanArray checked = mAdapterView.getCheckedItemPositions();
         ArrayList<Card> items = new ArrayList<Card>();
         MultiChoiceAdapter adapter = (MultiChoiceAdapter) owner;
 
 
-        for (int i =  checked.size()-1; i>=0; i--) {
+        for (int i = checked.size() - 1; i >= 0; i--) {
             if (checked.valueAt(i) == true) {
-                items.add( adapter.getItem((int) checked.keyAt(i)));
+                items.add(adapter.getItem((int) checked.keyAt(i)));
             }
         }
 
@@ -340,9 +357,10 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
 
     /**
      * Get the {@link android.widget.AbsListView.MultiChoiceModeListener}
+     *
      * @return
      */
-    public AbsListView.MultiChoiceModeListener getMultiChoiceModeListener() {
+    public MultiChoiceModeListener getMultiChoiceModeListener() {
         return mMultiChoiceModeListener;
     }
 
@@ -351,8 +369,57 @@ public class MultiChoiceAdapterHelperBase implements AdapterView.OnItemLongClick
      *
      * @param multiChoiceModeListener
      */
-    public void setMultiChoiceModeListener(AbsListView.MultiChoiceModeListener multiChoiceModeListener) {
+    public void setMultiChoiceModeListener(MultiChoiceModeListener multiChoiceModeListener) {
         mMultiChoiceModeListener = multiChoiceModeListener;
+    }
+
+    @SuppressLint("NewApi")
+    private class InternalV11Listener implements AbsListView.MultiChoiceModeListener {
+
+        @Override
+        public void onItemCheckedStateChanged(android.view.ActionMode mode, int position, long id, boolean checked) {
+            ActionModeWrapper mWrapper = new ActionModeWrapper(context, mode);
+            if (mMultiChoiceModeListener != null) {
+                mMultiChoiceModeListener.onItemCheckedStateChanged(mWrapper, position, id, checked);
+            }
+        }
+
+        @Override
+        public boolean onCreateActionMode(android.view.ActionMode mode, Menu menu) {
+            ActionModeWrapper mWrapper = new ActionModeWrapper(context, mode);
+            if (mMultiChoiceModeListener != null)
+                return mMultiChoiceModeListener.onCreateActionMode(mWrapper, menu);
+            else
+                return false;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(android.view.ActionMode mode, Menu menu) {
+            ActionModeWrapper mWrapper = new ActionModeWrapper(context, mode);
+            if (mMultiChoiceModeListener != null) {
+                return mMultiChoiceModeListener.onPrepareActionMode(mWrapper, menu);
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public boolean onActionItemClicked(android.view.ActionMode mode, MenuItem item) {
+            ActionModeWrapper mWrapper = new ActionModeWrapper(context, mode);
+            if (mMultiChoiceModeListener != null) {
+                return mMultiChoiceModeListener.onActionItemClicked(mWrapper, item);
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(android.view.ActionMode mode) {
+            ActionModeWrapper mWrapper = new ActionModeWrapper(context, mode);
+            if (mMultiChoiceModeListener != null) {
+                mMultiChoiceModeListener.onDestroyActionMode(mWrapper);
+            }
+        }
     }
 
 }

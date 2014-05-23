@@ -18,6 +18,10 @@
 
 package it.gmariotti.cardslib.library.view;
 
+import com.nineoldandroids.util.FloatProperty;
+import com.nineoldandroids.util.Property;
+import com.nineoldandroids.view.ViewHelper;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -62,6 +66,18 @@ import it.gmariotti.cardslib.library.internal.CardGridCursorAdapter;
  * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
  */
 public class CardGridView extends GridView implements CardView.OnExpandListAnimatorListener {
+
+    public static final Property<View, Float> ALPHA = new FloatProperty<View>("alpha") {
+        @Override
+        public void setValue(View object, float value) {
+            ViewHelper.setAlpha(object, value);
+        }
+
+        @Override
+        public Float get(View object) {
+            return ViewHelper.getAlpha(object);
+        }
+    };
 
     protected static String TAG = "CardGridView";
 

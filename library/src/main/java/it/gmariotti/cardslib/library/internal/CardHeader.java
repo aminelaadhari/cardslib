@@ -19,11 +19,11 @@
 package it.gmariotti.cardslib.library.internal;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import it.gmariotti.cardslib.library.R;

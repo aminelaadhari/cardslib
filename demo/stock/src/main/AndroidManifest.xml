@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+
   ~ *******************************************************************************
   ~   Copyright (c) 2013-2014 Gabriele Mariotti.
   ~
@@ -26,7 +27,7 @@
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="11"
         android:targetSdkVersion="19"/>
 
     <application

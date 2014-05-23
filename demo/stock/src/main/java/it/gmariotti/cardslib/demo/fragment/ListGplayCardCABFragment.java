@@ -20,8 +20,8 @@ package it.gmariotti.cardslib.demo.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.view.ActionMode;
 import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -105,7 +105,7 @@ public class ListGplayCardCABFragment extends BaseFragment {
             card.setOnLongClickListener(new Card.OnLongCardClickListener() {
                 @Override
                 public boolean onLongClick(Card card, View view) {
-                    return mCardArrayAdapter.startActionMode(getActivity());
+                    return mCardArrayAdapter.startActionMode((android.support.v7.app.ActionBarActivity) getActivity());
 
                 }
             });

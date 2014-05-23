@@ -18,12 +18,11 @@
 
 package it.gmariotti.cardslib.library.internal;
 
-import android.app.Activity;
 import android.content.Context;
-import android.view.ActionMode;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AbsListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +31,19 @@ import it.gmariotti.cardslib.library.internal.multichoice.DefaultOptionMultiChoi
 import it.gmariotti.cardslib.library.internal.multichoice.MultiChoiceAdapter;
 import it.gmariotti.cardslib.library.internal.multichoice.MultiChoiceAdapterHelperBase;
 import it.gmariotti.cardslib.library.internal.multichoice.OptionMultiChoice;
+import it.gmariotti.cardslib.library.internal.multichoice.MultiChoiceModeListener;
 import it.gmariotti.cardslib.library.view.CardGridView;
 import it.gmariotti.cardslib.library.view.CardView;
 
 /**
  * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
  */
-public abstract class CardGridArrayMultiChoiceAdapter extends CardGridArrayAdapter implements MultiChoiceAdapter, AbsListView.MultiChoiceModeListener {
+public abstract class CardGridArrayMultiChoiceAdapter extends CardGridArrayAdapter implements MultiChoiceAdapter, MultiChoiceModeListener {
 
     /**
      * Helper
      */
-    private MultiChoiceAdapterHelperBase mHelper = new MultiChoiceAdapterHelperBase(this);
+    private MultiChoiceAdapterHelperBase mHelper;
 
 
     /**
@@ -73,6 +73,7 @@ public abstract class CardGridArrayMultiChoiceAdapter extends CardGridArrayAdapt
      */
     public CardGridArrayMultiChoiceAdapter(Context context, List<Card> cards, OptionMultiChoice options) {
         super(context, cards);
+        this.mHelper = new MultiChoiceAdapterHelperBase(context, this);
         this.mOptions = options;
         mHelper.setMultiChoiceModeListener(this);
     }
@@ -113,7 +114,7 @@ public abstract class CardGridArrayMultiChoiceAdapter extends CardGridArrayAdapt
     // ActionMode
     // -------------------------------------------------------------
 
-    public boolean startActionMode(Activity activity) {
+    public boolean startActionMode(ActionBarActivity activity) {
         return mHelper.startActionMode(activity);
     }
 

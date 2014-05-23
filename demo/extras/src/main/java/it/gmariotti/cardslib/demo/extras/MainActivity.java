@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,7 +58,7 @@ import it.gmariotti.cardslib.demo.extras.iabutils.IabResult;
 import it.gmariotti.cardslib.demo.extras.iabutils.IabUtil;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     private ListView mDrawerList;
     private DrawerLayout mDrawer;
@@ -102,8 +103,8 @@ public class MainActivity extends Activity {
         //mPullToRefreshAttacher = PullToRefreshAttacher.get(this);
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout_extras);
 
@@ -230,14 +231,14 @@ public class MainActivity extends Activity {
 
         @Override
         public void onDrawerClosed(View view) {
-            getActionBar().setTitle(getString(mCurrentTitle));
-            invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            getSupportActionBar().setTitle(getString(mCurrentTitle));
+            //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
         }
 
         @Override
         public void onDrawerOpened(View drawerView) {
-            getActionBar().setTitle(getString(R.string.app_name_extras));
-            invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            getSupportActionBar().setTitle(getString(R.string.app_name_extras));
+            //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
         }
     }
 
@@ -339,8 +340,8 @@ public class MainActivity extends Activity {
 
     private void openFragment(BaseFragment baseFragment) {
         if (baseFragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             fragmentTransaction.replace(R.id.fragment_main_extras, baseFragment);
             //fragmentTransaction.addToBackStack(null);

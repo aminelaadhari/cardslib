@@ -200,7 +200,9 @@ public class StaggeredGridFragment extends BaseFragment {
      */
     private void updateAdapter(ArrayList<Card> cards) {
         if (cards!=null) {
-            mCardArrayAdapter.addAll(cards);
+            for (Card card : cards) {
+                mCardArrayAdapter.add(card);
+            }
             mCardArrayAdapter.notifyDataSetChanged();
         }
     }

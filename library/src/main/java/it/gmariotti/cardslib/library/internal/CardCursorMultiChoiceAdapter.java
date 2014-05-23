@@ -3,7 +3,7 @@ package it.gmariotti.cardslib.library.internal;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.view.ActionMode;
+import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AbsListView;
@@ -15,16 +15,17 @@ import it.gmariotti.cardslib.library.internal.CardCursorAdapter;
 import it.gmariotti.cardslib.library.internal.multichoice.DefaultOptionMultiChoice;
 import it.gmariotti.cardslib.library.internal.multichoice.MultiChoiceAdapter;
 import it.gmariotti.cardslib.library.internal.multichoice.MultiChoiceAdapterHelperBase;
+import it.gmariotti.cardslib.library.internal.multichoice.MultiChoiceModeListener;
 import it.gmariotti.cardslib.library.internal.multichoice.OptionMultiChoice;
 import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardView;
 
-public abstract class CardCursorMultiChoiceAdapter extends CardCursorAdapter implements MultiChoiceAdapter, AbsListView.MultiChoiceModeListener {
+public abstract class CardCursorMultiChoiceAdapter extends CardCursorAdapter implements MultiChoiceAdapter, MultiChoiceModeListener {
 
     /**
      * Helper
      */
-    private MultiChoiceAdapterHelperBase mHelper = new MultiChoiceAdapterHelperBase(this);
+    private MultiChoiceAdapterHelperBase mHelper;
 
 
     /**
@@ -52,6 +53,7 @@ public abstract class CardCursorMultiChoiceAdapter extends CardCursorAdapter imp
      */
     public CardCursorMultiChoiceAdapter(Context context, OptionMultiChoice options) {
         super(context, null, true);
+        this.mHelper = new MultiChoiceAdapterHelperBase(context, this);
         this.mOptions = options;
         mHelper.setMultiChoiceModeListener(this);
     }
@@ -93,7 +95,7 @@ public abstract class CardCursorMultiChoiceAdapter extends CardCursorAdapter imp
     // -------------------------------------------------------------
 
     public boolean startActionMode(Activity activity) {
-        return mHelper.startActionMode(activity);
+        return mHelper.startActionMode((android.support.v7.app.ActionBarActivity) activity);
     }
 
     /**

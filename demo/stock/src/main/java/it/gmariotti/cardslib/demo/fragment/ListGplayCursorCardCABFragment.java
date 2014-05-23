@@ -18,14 +18,16 @@
 
 package it.gmariotti.cardslib.demo.fragment;
 
-import android.app.LoaderManager;
+import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.view.ActionMode;
 import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,6 +91,7 @@ public class ListGplayCursorCardCABFragment extends BaseFragment implements Load
         return loader;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (getActivity() == null) {
@@ -97,11 +100,13 @@ public class ListGplayCursorCardCABFragment extends BaseFragment implements Load
         mAdapter.swapCursor(data);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void init() {
 
         //Set the arrayAdapter

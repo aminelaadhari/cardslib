@@ -18,10 +18,13 @@
 
 package it.gmariotti.cardslib.library.internal.overflowanimation;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.view.ViewHelper;
+
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -135,10 +138,10 @@ public abstract class TwoCardOverlayAnimation extends BaseCardOverlayAnimation {
                     }
                     mInternalLayoutOverlay.addView(viewIn);
 
-                    viewIn.setAlpha(0);
+                    ViewHelper.setAlpha(viewIn, 0);
                     viewIn.setVisibility(View.VISIBLE);
 
-                    viewIn.animate()
+                    animate(viewIn)
                             .alpha(1f)
                             .setDuration(getAnimationDuration())
                             .setListener(null);
@@ -175,7 +178,7 @@ public abstract class TwoCardOverlayAnimation extends BaseCardOverlayAnimation {
         final View[] viewsFirstOut = getOutViews(card, infoAnimation);
 
         if (viewLastIn != null) {
-            viewLastIn.animate()
+            animate(viewLastIn)
                     .alpha(0f)
                     .setDuration(getAnimationDuration())
                     .setListener(new AnimatorListenerAdapter() {
@@ -196,7 +199,7 @@ public abstract class TwoCardOverlayAnimation extends BaseCardOverlayAnimation {
 
                             for (final View viewOut : viewsLastOut) {
                                 if (viewOut != null) {
-                                    viewOut.animate()
+                                    animate(viewOut)
                                             .alpha(1f)
                                             .setDuration(getAnimationDuration());
                                 }

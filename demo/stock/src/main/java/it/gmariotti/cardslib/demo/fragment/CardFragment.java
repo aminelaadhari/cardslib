@@ -163,7 +163,7 @@ public class CardFragment extends BaseFragment {
         //You can set a SwipeListener.
         card.setOnSwipeListener(new Card.OnSwipeListener() {
             @Override
-            public void onSwipe(Card card) {
+            public void onSwipe(Card card, boolean dismissRight) {
                 if (mTextViewSwipe!=null)
                     mTextViewSwipe.setVisibility(View.GONE);
             }

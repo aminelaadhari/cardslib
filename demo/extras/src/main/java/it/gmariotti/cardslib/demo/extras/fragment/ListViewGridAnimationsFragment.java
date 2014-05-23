@@ -21,6 +21,7 @@ package it.gmariotti.cardslib.demo.extras.fragment;
 import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,8 +54,7 @@ import it.gmariotti.cardslib.library.view.CardGridView;
  *
  * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
  */
-public class ListViewGridAnimationsFragment extends BaseFragment implements
-        ActionBar.OnNavigationListener {
+public class ListViewGridAnimationsFragment extends BaseFragment implements android.support.v7.app.ActionBar.OnNavigationListener {
 
     private CardGridView mListView;
     private CardGridArrayAdapter mCardArrayAdapter;
@@ -88,7 +88,7 @@ public class ListViewGridAnimationsFragment extends BaseFragment implements
     public void onPause() {
         super.onPause();
 
-        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
     }
 
@@ -97,11 +97,11 @@ public class ListViewGridAnimationsFragment extends BaseFragment implements
      */
     private void populateNavigationList() {
 
-        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
         final String[] dropdownValues = {"Alpha", "Left", "Right", "Bottom", "Bottom right", "Scale"};
 
-        ActionBar actionBar = getActivity().getActionBar();
+        android.support.v7.app.ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
 
         // Specify a SpinnerAdapter to populate the dropdown list.
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(actionBar.getThemedContext(),

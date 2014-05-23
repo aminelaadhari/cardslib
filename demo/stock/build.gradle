@@ -10,7 +10,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 10
         targetSdkVersion 19
         versionName project.VERSION_NAME
         versionCode Integer.parseInt(project.VERSION_CODE)
@@ -45,7 +45,8 @@ dependencies {
     // Cards Library
     compile project(':library')
     // Support Libraries
-    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:support-v4:+'
+    compile "com.android.support:appcompat-v7:+"
 
     androidTestCompile 'com.jakewharton.espresso:espresso:1.1-r2'
 }

@@ -18,7 +18,7 @@
 
 package it.gmariotti.cardslib.library.internal.multichoice;
 
-import android.view.ActionMode;
+import android.support.v7.view.ActionMode;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;

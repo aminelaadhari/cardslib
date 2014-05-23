@@ -1,4 +1,3 @@
-
 /*
  * ******************************************************************************
  *   Copyright (c) 2013 Roman Nurik,2013-2014 Gabriele Mariotti.
@@ -19,9 +18,12 @@
 
 package it.gmariotti.cardslib.library.view.listener;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.view.ViewHelper;
+
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -79,7 +81,7 @@ public class SwipeDismissViewTouchListener implements View.OnTouchListener {
          * @param cardView               The originating {@link it.gmariotti.cardslib.library.view.CardView}.
          * @parma card                   Card
          */
-        void onDismiss(CardView cardView,Card card);
+        void onDismiss(CardView cardView,Card card, boolean dismissRight);
     }
 
     /**
@@ -165,19 +167,19 @@ public class SwipeDismissViewTouchListener implements View.OnTouchListener {
                 }
                 if (dismiss) {
                     // dismiss
-
-                    mCardView.animate()
+                    final boolean isDismissRight = dismissRight;
+                    animate(mCardView)
                             .translationX(dismissRight ? mViewWidth : -mViewWidth)
                             .alpha(0).setDuration(mAnimationTime)
                             .setListener(new AnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
-                                    performDismiss();
+                                    performDismiss(isDismissRight);
                                 }
                             });
                 } else {
                     // cancel
-                    mCardView.animate().translationX(0).alpha(1)
+                    animate(mCardView).translationX(0).alpha(1)
                             .setDuration(mAnimationTime).setListener(null);
                 }
                 mVelocityTracker.recycle();
@@ -209,8 +211,8 @@ public class SwipeDismissViewTouchListener implements View.OnTouchListener {
 
                 if (mSwiping) {
                     mTranslationX = deltaX;
-                    mCardView.setTranslationX(deltaX);
-                    mCardView.setAlpha(Math.max(0f,
+                    ViewHelper.setTranslationX(mCardView, deltaX);
+                    ViewHelper.setAlpha(mCardView, Math.max(0f,
                             Math.min(1f, 1f - 2f * Math.abs(deltaX) / mViewWidth)));
                     return true;
                 }
@@ -221,7 +223,7 @@ public class SwipeDismissViewTouchListener implements View.OnTouchListener {
     }
 
 
-    private void performDismiss() {
+    private void performDismiss(final boolean dismissRight) {
         // Animate the dismissed view to zero-height and then fire the dismiss callback.
         // This triggers layout on each animation frame; in the future we may want to do something
         // smarter and more performant.
@@ -236,11 +238,10 @@ public class SwipeDismissViewTouchListener implements View.OnTouchListener {
             @Override
             public void onAnimationEnd(Animator animation) {
 
-                mCallbacks.onDismiss(mCardView,mToken);
+                mCallbacks.onDismiss(mCardView,mToken, dismissRight);
                 // Reset view presentation
-                mCardView.setAlpha(1f);
-                mCardView.setTranslationX(0);
-                //ViewGroup.LayoutParams lp = mCardView.getLayoutParams();
+                ViewHelper.setAlpha(mCardView, 1f);
+                ViewHelper.setTranslationX(mCardView, 0);
                 lp.height = originalHeight;
                 mCardView.setLayoutParams(lp);
             }

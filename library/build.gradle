@@ -10,7 +10,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 10
         targetSdkVersion 19
         versionName project.VERSION_NAME
         versionCode Integer.parseInt(project.VERSION_CODE)
@@ -23,6 +23,10 @@ android {
 }
 
 dependencies {
+    // Support Libraries
+    compile 'com.android.support:support-v4:+'
+    compile "com.android.support:appcompat-v7:+"
+    compile 'com.nineoldandroids:library:2.4.+'
 }
 
 // Used to update in Maven

@@ -57,6 +57,32 @@ import it.gmariotti.cardslib.library.internal.base.BaseCard;
 public class Card extends BaseCard {
 
     // -------------------------------------------------------------
+    /**
+     * Defines the direction in which the swipe to delete can be done. The default
+     * is {@link SwipeDirection#BOTH}. Use {@link #setSwipeDirectione
+     * to set the direction.
+     */
+    public enum SwipeDirection {
+        /**
+         * The user can swipe each item into both directions (left and right)
+         * to delete it.
+         */
+        BOTH,
+        /**
+         * The user can only swipe the items to the beginning of the item to
+         * delete it. The start of an item is in Left-To-Right languages the left
+         * side and in Right-To-Left languages the right side. Before API level
+         * 17 this is always the left side.
+         */
+        START,
+        /**
+         * The user can only swipe the items to the end of the item to delete it.
+         * This is in Left-To-Right languages the right side in Right-To-Left
+         * languages the left side. Before API level 17 this will always be the
+         * right side.
+         */
+        END
+    }
 
     protected static String TAG = "Card";
 
@@ -74,6 +100,8 @@ public class Card extends BaseCard {
      * Used to enable a swipe gesture and its listener {@link Card#setOnClickListener(OnCardClickListener)}
      */
     protected boolean mIsSwipeable = false;
+
+    private SwipeDirection mSwipeDirection = SwipeDirection.BOTH;
 
     /**
      * Indicates to draw a shadow
@@ -356,16 +384,16 @@ public class Card extends BaseCard {
      * Interface to listen for any callbacks when card is swiped.
      */
     public interface OnSwipeListener {
-        public void onSwipe(Card card);
+        public void onSwipe(Card card, boolean dismissRight);
     }
 
     /**
      * Called when card is swiped
      */
-    public void onSwipeCard() {
+    public void onSwipeCard(boolean dismissRight) {
         if (isSwipeable() && mOnSwipeListener != null) {
             //mOnSwipeListener.onSwipe(this, mCardView);
-            mOnSwipeListener.onSwipe(this);
+            mOnSwipeListener.onSwipe(this, dismissRight);
         }
     }
 
@@ -663,6 +691,20 @@ public class Card extends BaseCard {
      */
     public void setSwipeable(boolean isSwipeable) {
         mIsSwipeable = isSwipeable;
+    }
+
+    public SwipeDirection getSwipeDirection() {
+        return mSwipeDirection;
+    }
+    /**
+     * Sets the directions in which a list item can be swiped to delete.
+     * By default this is set to {@link SwipeDirection#BOTH} so that an item
+     * can be swiped into both directions.
+     *
+     * @param direction The direction to limit the swipe to.
+     */
+    public void setSwipeDirection(SwipeDirection direction) {
+        mSwipeDirection = direction;
     }
 
     /**

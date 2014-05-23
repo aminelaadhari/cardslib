@@ -18,8 +18,8 @@
 
 package it.gmariotti.cardslib.library.internal.dismissanimation;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import android.content.Context;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -37,14 +37,13 @@ public class SwipeDismissAnimation extends BaseDismissAnimation {
 
 
     public SwipeDismissAnimation(Context context,boolean dismissRight) {
-        super(context);
-        mDismissRight = dismissRight;
+        super(context, dismissRight);
     }
 
     @Override
     public void animate(final Card card, final CardView cardView) {
 
-        cardView.animate()
+        com.nineoldandroids.view.ViewPropertyAnimator.animate(cardView)
                 .translationX(mDismissRight ? mListWidth : -mListWidth)
                 .alpha(0)
                 .setDuration(mAnimationTime)

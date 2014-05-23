@@ -30,7 +30,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.LruCache;
+import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

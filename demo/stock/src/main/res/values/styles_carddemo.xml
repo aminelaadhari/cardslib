@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Carddemo" parent="@android:style/Theme.Holo.Light">
+    <style name="Theme.Carddemo" parent="@style/Theme.AppCompat.Light">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_carddemo</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Carddemo</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Carddemo</item>
@@ -33,46 +33,46 @@
         
     </style>
 
-    <style name="ActionBar.Solid.Carddemo" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+    <style name="ActionBar.Solid.Carddemo" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
         <item name="android:background">@drawable/ab_solid_carddemo</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_carddemo</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_carddemo</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Carddemo</item>
     </style>
 
-    <style name="ActionBar.Transparent.Carddemo" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="ActionBar.Transparent.Carddemo" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="android:background">@drawable/ab_transparent_carddemo</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Carddemo</item>
     </style>
 
-    <style name="PopupMenu.Carddemo" parent="@android:style/Widget.Holo.Light.ListPopupWindow">
+    <style name="PopupMenu.Carddemo" parent="@style/Widget.AppCompat.Light.PopupMenu">
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_carddemo</item>	
     </style>
 
-    <style name="DropDownListView.Carddemo" parent="@android:style/Widget.Holo.Light.ListView.DropDown">
+    <style name="DropDownListView.Carddemo" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_carddemo</item>
     </style>
 
-    <style name="ActionBarTabStyle.Carddemo" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
+    <style name="ActionBarTabStyle.Carddemo" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_carddemo</item>
     </style>
 
-    <style name="DropDownNav.Carddemo" parent="@android:style/Widget.Holo.Light.Spinner">
+    <style name="DropDownNav.Carddemo" parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
         <item name="android:background">@drawable/spinner_background_ab_carddemo</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_carddemo</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_carddemo</item>
     </style>
     
-    <style name="ProgressBar.Carddemo" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal">
+    <style name="ProgressBar.Carddemo" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_carddemo</item>
     </style>
     
-    <style name="ActionButton.CloseMode.Carddemo" parent="@android:style/Widget.Holo.Light.ActionButton.CloseMode">
+    <style name="ActionButton.CloseMode.Carddemo" parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_carddemo</item>
     </style>
 
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Carddemo.Widget" parent="@android:style/Theme.Holo">
+    <style name="Theme.Carddemo.Widget" parent="@style/Theme.AppCompat">
         <item name="android:popupMenuStyle">@style/PopupMenu.Carddemo</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Carddemo</item>
     </style>

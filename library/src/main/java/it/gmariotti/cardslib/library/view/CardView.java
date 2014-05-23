@@ -18,9 +18,9 @@
 
 package it.gmariotti.cardslib.library.view;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -452,11 +452,11 @@ public class CardView extends BaseCardView {
                 }
 
                 @Override
-                public void onDismiss(CardView cardView, Card card) {
+                public void onDismiss(CardView cardView, Card card, boolean dismissRight) {
                     final ViewGroup vg = (ViewGroup)(cardView.getParent());
                     if (vg!=null){
                         vg.removeView(cardView);
-                        card.onSwipeCard();
+                        card.onSwipeCard(dismissRight);
                     }
                 }
             }));

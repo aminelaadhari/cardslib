@@ -146,7 +146,7 @@ public class ListGplayUndoCardFragment extends BaseFragment {
 
             setOnSwipeListener(new OnSwipeListener() {
                     @Override
-                    public void onSwipe(Card card) {
+                    public void onSwipe(Card card, boolean dismissRight) {
                         Toast.makeText(getContext(), "Removed card=" + title, Toast.LENGTH_SHORT).show();
                     }
             });
